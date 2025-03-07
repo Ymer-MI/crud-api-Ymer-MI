@@ -47,7 +47,7 @@ userRouter.post('/', async (req, res) => {
     try {
         const { name, address, profession, bio }: IUser = req.body, email: string = req.body.email;
 
-        if (!name || !email  || !address || !address.street || !address.zip || !address.city) return (() => { res.status(400).json(genErrorObj(`User data must follow correct formatting specified in the format property of this object.`, req.body, foramts.user)) })();
+        if (name || !email  || !address || !address.street || !address.zip || !address.city) return (() => { res.status(400).json(genErrorObj(`User data must follow correct formatting specified in the format property of this object.`, req.body, foramts.user)) })();
 
         const ctrlResponse = await createUser({ name, address, profession, bio }, email);
 

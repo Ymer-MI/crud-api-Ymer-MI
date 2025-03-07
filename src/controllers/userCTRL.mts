@@ -1,5 +1,5 @@
 import { InferSchemaType } from 'mongoose';
-import User from '../models/users/userSchema.mts';
+import User from '../models/users/DB/userSchema.mts';
 import { IUser } from '../models/users/IUser.mts';
 import { IUserDTO } from '../models/users/userDTO.mts';
 import { v4 as uuid } from 'uuid';
@@ -20,7 +20,7 @@ const convertToUserDTO = (user: userDB) => ({
 
 export const createUser = async (user: IUser, email: string) => {
     try {
-        const userObj = {...user, email }, userDB = await User.create({ id: uuid(), ...userObj});
+        const userObj = {...user, email }, userDB = await User.create({ id: uuid(), ...userObj} satisfies userDB);
 
         if (!userDB) return { status: 0, message: `Could not create user from data: ${userObj}`};
 
