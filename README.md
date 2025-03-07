@@ -17,12 +17,11 @@ För att kunna se någonting är det bra om ni skapar ett mycket enkelt frontend
 - Routes och controllers är på plats
 - Koppling med mongodb fungerar
 - Endpoints för alla CRUD-operationer
-- En liten frontend för att kunna använda api:t
 
 ## Betyg VG
 
 - Samtliga punkter för G
 - Sortering på serversidan
-- Paginering på serversidan
 - Sökning på serversidan
-- Uppdaterad frontend för att visa funktionaliteten
+- Minst en nästling i ett objekt
+- Mycket liten frontend som gör anrop
