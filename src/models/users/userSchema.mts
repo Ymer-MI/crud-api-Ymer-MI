@@ -1,5 +1,5 @@
-import { model, Schema } from "mongoose";
-import { addressSchema } from "./addressSchema.mts";
+import { model, Schema } from 'mongoose';
+import { addressSchema } from './addressSchema.mts';
 
 const userSchema = new Schema({
     id: {
@@ -18,7 +18,7 @@ const userSchema = new Schema({
         type: addressSchema,
         required: true
     },
-    headline: String,
+    profession: String,
     bio: String
 }), User = model('User', userSchema);
 
