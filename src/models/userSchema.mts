@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { addressSchema } from "./addressSchema.mts";
 
 const userSchema = new Schema({
@@ -20,4 +20,6 @@ const userSchema = new Schema({
     },
     headline: String,
     bio: String
-});
+}), User = model('User', userSchema);
+
+export default User;
