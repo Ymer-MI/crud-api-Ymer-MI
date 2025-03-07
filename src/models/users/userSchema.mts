@@ -3,7 +3,7 @@ import { addressSchema } from './addressSchema.mts';
 
 const userSchema = new Schema({
     id: {
-        type: Number,
+        type: String,
         required: true
     },
     name: {

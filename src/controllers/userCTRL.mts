@@ -2,11 +2,11 @@ import { InferSchemaType } from 'mongoose';
 import User from '../models/users/userSchema.mts';
 import { IUser } from '../models/users/IUser.mts';
 import { IUserDTO } from '../models/users/userDTO.mts';
+import { v4 as uuid } from 'uuid';
 
 type userDB = InferSchemaType<typeof User.schema>;
 
-const GEN_MIN = 0, GEN_MAX = 100, genID = () => Date.now() + Math.floor(Math.random() * (GEN_MAX - GEN_MIN) + GEN_MIN),
-    convertToUserDTO = (user: userDB) => ({
+const convertToUserDTO = (user: userDB) => ({
         id: user.id,
         name: user.name,
         address: {
@@ -20,7 +20,7 @@ const GEN_MIN = 0, GEN_MAX = 100, genID = () => Date.now() + Math.floor(Math.ran
 
 export const createUser = async (user: IUser, email: string) => {
     try {
-        const userObj = {...user, email }, userDB = await User.create({ id: genID(), ...userObj});
+        const userObj = {...user, email }, userDB = await User.create({ id: uuid(), ...userObj});
 
         if (!userDB) return { status: 0, message: `Could not create user from data: ${userObj}`};
 
