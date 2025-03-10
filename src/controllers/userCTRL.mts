@@ -20,7 +20,7 @@ const convertToUserDTO = (user: userDBType) => ({
     checkIndexOf = (txt: string | number, subTxt: string | number) => !txt.toString().toLowerCase().indexOf(subTxt.toString().toLowerCase()), userCTRL = {
         async createUser(user: IUser, email: string) {
             try {
-                const userObj = {...user, email }, userDB = await User.create({ id: uuid(), ...userObj} satisfies userDBType) as userDBType;
+                const userObj = {...user, email }, userDB = await User.create({ id: uuid(), ...userObj} satisfies userDBType);
         
                 if (!userDB) return genRetObj(`Could not create user from data: ${userObj}`);
         
@@ -32,7 +32,7 @@ const convertToUserDTO = (user: userDBType) => ({
         async getUser(id?: string, search?: { param: string, value: string | number }) {
             try {
                 if (!id) {
-                    const users = await User.find() as userDBType[];
+                    const users = await User.find();
 
                     if (!users) return genRetObj(`No users found.`);
 
@@ -58,11 +58,39 @@ const convertToUserDTO = (user: userDBType) => ({
                     return genRetObj(`Found ${usersFiltered.length} users with ${search.param} = ${search.value}.`, usersFiltered.map(convertToUserDTO));
                 }
 
-                const user = await User.findOne({ id }) as userDBType;
+                const user = await User.findOne({ id });
 
                 if (!user) return genRetObj(`No user found with id: ${id}`);
 
                 return genRetObj(`User ${user.name} was found.`, [convertToUserDTO(user)]);
+            } catch (error) {
+                throw error;
+            }
+        },
+        async updateUser(user: IUserDTO, email: string) {
+            try {
+                const userDB = await User.findOne({ id: user.id });
+
+                if (!userDB) return genRetObj(`No user found with id: ${user.id}`);
+
+                console.log(userDB);
+
+                Object.assign(userDB, {
+                    id: userDB.id,
+                    name: user.name ?? userDB.name,
+                    email: email ?? userDB.email,
+                    address: {
+                        street: user.address?.street ?? userDB.address.street,
+                        zip: user.address?.zip ?? userDB.address.zip,
+                        city: user.address?.city ?? userDB.address.city
+                    },
+                    profession: user.profession ?? userDB.profession,
+                    bio: user.bio ?? userDB.bio
+                } satisfies userDBType);
+
+                await userDB.save();
+
+                return genRetObj(`User ${userDB.name} has been updated.`, [convertToUserDTO(userDB)]);
             } catch (error) {
                 throw error;
             }
