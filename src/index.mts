@@ -1,13 +1,11 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import cors from 'cors';
 import mongoose from 'mongoose';
 import { userRouter } from './routes/userRTs.mts';
 
 dotenv.config();
 
-const DB_URL = process.env.MONGODB_URL, PORT = process.env.PORT || 3000, STS_MSG = `Server running @http://localhost:${PORT}`,
-    app = express().use(express.json(), cors({ origin: 'http://localhost:5173' }));
+const DB_URL = process.env.MONGODB_URL, PORT = process.env.PORT || 3000, app = express().use(express.json()), STS_MSG = `Server running @http://localhost:${PORT}`;
 
 if (!DB_URL) throw Error('MONGODB_URL is not defined in .env file.');
 
