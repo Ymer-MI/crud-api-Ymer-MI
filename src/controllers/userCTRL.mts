@@ -73,8 +73,6 @@ const convertToUserDTO = (user: userDBType) => ({
 
                 if (!userDB) return genRetObj(`No user found with id: ${user.id}`);
 
-                console.log(userDB);
-
                 Object.assign(userDB, {
                     id: userDB.id,
                     name: user.name ?? userDB.name,
@@ -91,6 +89,17 @@ const convertToUserDTO = (user: userDBType) => ({
                 await userDB.save();
 
                 return genRetObj(`User ${userDB.name} has been updated.`, [convertToUserDTO(userDB)]);
+            } catch (error) {
+                throw error;
+            }
+        },
+        async deleteUser(id: string) {
+            try {
+                const userDB = await User.findOneAndDelete({ id });
+
+                if (!userDB) return genRetObj(`No user found with id: ${id}`);
+
+                return genRetObj(`User ${userDB.name} has been deleted.`, [convertToUserDTO(userDB)]);
             } catch (error) {
                 throw error;
             }
