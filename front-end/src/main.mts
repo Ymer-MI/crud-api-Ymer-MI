@@ -24,6 +24,6 @@ users?.forEach(user => {
         ${user.address.zip}, ${user.address.city}
     `;
 
-    div .append(h2, h3, p);
+    div.append(h2, h3, p);
     section.append(div);
 });
