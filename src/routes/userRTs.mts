@@ -18,7 +18,7 @@ const formats = (() => {
             type: 'string',
             required: true
         }
-    };
+    }, eBURL = 'http://localhost';
 
     return {
         id: {
@@ -48,14 +48,21 @@ const formats = (() => {
         search: {
             p: {
                 type: 'string',
-                required: 'false unless s is present.',
+                required: 'false unless q is present.',
                 possibleValues: ['name', 'street', 'zip', 'city']
             },
-            s: {
+            q: {
                 type: 'string || number',
                 required: 'false unless p is present.'
             },
-            exampel: 'http://localhost/users?p=name&s=smith'
+            exampel: `${eBURL}/users?p=name&q=smith`
+        },
+        sort: {
+            type: 'string',
+            required: false,
+            possibleValues: ['asc', 'desc'],
+            default: 'asc',
+            example: `${eBURL}/users?s=desc`
         }
     };
 })(), getReqURL = (req: Request) => `${req.protocol}://${req.headers.host + req.baseUrl}/`,
@@ -86,16 +93,23 @@ userRouter.post('/', async (req, res) => {
 
 userRouter.get('/:id?' as string, async (req, res) => {
     try {
-        const { id } = req.params, { p, s } = req.query;
+        const { id } = req.params, { p, q, s } = req.query;
         
-        if ((!p && s) || (p && !s)) return inputFault(
+        if ((!p && q) || (p && !q)) return inputFault(
             res,
-            `Both query parameters p and s must be present if one is present.`,
+            `Both query parameters p and q must be present if one is present.`,
             req.query,
             { format: formats.search }
         );
+        
+        if (s && !['asc', 'desc'].includes(s.toString())) inputFault(
+            res,
+            `Query parameter s can only have the values asc or desc. If omitted the default value is asc.`,
+            req.query,
+            { format: formats.sort }
+        )
 
-        const ctrlResponse = await userCTRL.getUser(id, { param: p as string, value: s as number | string });
+        const ctrlResponse = await userCTRL.getUser(id, s?.toString() , { param: p?.toString() , value: typeof q !== 'number' ? q?.toString() : parseInt(q) });
 
         return retFunc(res, !ctrlResponse.status ? 404 : 200, ctrlResponse);
     } catch (error) {

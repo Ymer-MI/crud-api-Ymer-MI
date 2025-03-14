@@ -17,7 +17,7 @@ const convertToUserDTO = (user: userDBType) => ({
         profession: user.profession || undefined,
         bio: user.bio || undefined
     } satisfies IUserDTO as IUserDTO), genRetObj = (message: string, users?: IUserDTO[]) => ({ status: !users ? 0 : 1, message, users: users ?? [] }),
-    checkIndexOf = (txt: string | number, subTxt: string | number) => !txt.toString().toLowerCase().indexOf(subTxt.toString().toLowerCase()), userCTRL = {
+    checkIndexOf = (txt: string | number, subTxt: string | number | undefined) => !subTxt ? false : txt.toString().toLowerCase().includes(subTxt.toString().toLowerCase()), userCTRL = {
         async createUser(user: IUser, email: string) {
             try {
                 const userObj = {...user, email }, userDB = await User.create({ id: uuid(), ...userObj} satisfies userDBType);
@@ -29,14 +29,14 @@ const convertToUserDTO = (user: userDBType) => ({
                 throw error;
             }
         },
-        async getUser(id?: string, search?: { param: string, value: string | number }) {
+        async getUser(id?: string, sort: string = 'asc', search?: { param?: string, value?: string | number }) {
             try {
                 if (!id) {
-                    const users = await User.find();
+                    const users = await User.find().sort({ name : sort === 'asc' ? 1 : -1 });
 
                     if (!users) return genRetObj(`No users found.`);
 
-                    if (!search?.param || !search?.value) return genRetObj(`Found ${users.length} users.`, users.map(convertToUserDTO));
+                    if (!search?.value || !search?.param) return genRetObj(`Found ${users.length} users.`, users.map(convertToUserDTO));
 
                     const usersFiltered = users.filter(user => {
                         switch (search.param) {

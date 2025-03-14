@@ -2,6 +2,7 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  font-size: 10px;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -28,6 +29,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  font-size: 1.6rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -36,11 +38,32 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 3.2em;
+  font-size: 2em;
 }
 
 h2 {
-  font-size: 2.4em;
+  font-size: 1.5em;
+}
+
+form {
+  text-align: left;
+  font-size: large;
+  
+  * {
+    font-size: large;
+
+    &:not(label) {
+      padding: .5rem;
+    }
+    
+    &:not(:last-child) {
+      margin-right: 1rem;
+    }
+  }
+
+  input {
+    width: 75%;
+  }
 }
 
 #app {
@@ -49,14 +72,20 @@ h2 {
   padding: 2rem;
   text-align: center;
 
-  #users-container > div {
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 10px 10px #101010 ;
-    border: 1px solid #101010;
+  #users-container > ul {
+    list-style: none;
+    padding-left: 0;
 
-    &:not(:last-child) {
-      margin-bottom: 20px;
+    > li {
+      min-width: 35rem;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 10px 10px #101010 ;
+      border: 1px solid #101010;
+  
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
     }
   }
 }
