@@ -72,14 +72,20 @@ form {
   padding: 2rem;
   text-align: center;
 
-  #users-container > div {
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 10px 10px #101010 ;
-    border: 1px solid #101010;
+  #users-container > ul {
+    list-style: none;
+    padding-left: 0;
 
-    &:not(:last-child) {
-      margin-bottom: 20px;
+    > li {
+      min-width: 35rem;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 10px 10px #101010 ;
+      border: 1px solid #101010;
+  
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
     }
   }
 }

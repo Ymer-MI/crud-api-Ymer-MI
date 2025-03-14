@@ -97,7 +97,7 @@ userRouter.get('/:id?' as string, async (req, res) => {
         
         if ((!p && q) || (p && !q)) return inputFault(
             res,
-            `Both query parameters p and s must be present if one is present.`,
+            `Both query parameters p and q must be present if one is present.`,
             req.query,
             { format: formats.search }
         );

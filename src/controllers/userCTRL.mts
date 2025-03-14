@@ -36,7 +36,7 @@ const convertToUserDTO = (user: userDBType) => ({
 
                     if (!users) return genRetObj(`No users found.`);
 
-                    if (search?.value || !search?.param) return genRetObj(`Found ${users.length} users.`, users.map(convertToUserDTO));
+                    if (!search?.value || !search?.param) return genRetObj(`Found ${users.length} users.`, users.map(convertToUserDTO));
 
                     const usersFiltered = users.filter(user => {
                         switch (search.param) {
